@@ -1,0 +1,13 @@
+{
+  "name": "FO Mhealth",
+  "short_name": "FO Mhealth",
+  "description": "Private, offline-first mental wellness companion. Encrypted mood tracking, journaling, guided exercises, and self-report screenings.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#101418",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FO Mhealth — mood, journal &amp; mind gym</title>
+<meta name="description" content="FO Mhealth is a private, offline-first mental wellness companion: mood check-ins, journaling, guided exercises, and self-report screenings. All data stays on your device.">
+<meta name="theme-color" content="#101418">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg">
+<link rel="apple-touch-icon" href="assets/icon.svg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="app" aria-live="polite"></div>
+<script src="js/crypto.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
