@@ -47,3 +47,7 @@ Vanilla HTML/CSS/JS, zero dependencies, zero build. Web Crypto for encryption, S
 FO Mhealth supports self-reflection and habit building. It is not a medical device, does not diagnose, and does not replace professional care. If you are in crisis, please use the support lines listed in the app (Settings → Support) or your local emergency number.
 
 MIT licensed. Built for the community, in the open.
+
+---
+
+Built as an original community project. Deployed via GitHub Actions.
