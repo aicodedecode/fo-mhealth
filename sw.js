@@ -1,9 +1,9 @@
 /* FO Mhealth service worker: cache-first shell so the app works fully offline. */
-var CACHE = "fomhealth-v5";
+var CACHE = "fomhealth-v6";
 var ASSETS = [
-  "./", "./index.html", "./css/styles.css", "./js/crypto.js", "./js/data.js", "./js/app.js",
+  "./", "./index.html", "./css/styles.css", "./js/crypto.js", "./js/data.js", "./js/app.js", "./js/app2.js",
   "./manifest.webmanifest",
-  "./assets/icon.svg",
+  "./assets/icon.svg", 
 ];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }).then(function () { return self.skipWaiting(); }));
