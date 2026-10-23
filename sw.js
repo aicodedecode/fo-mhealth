@@ -1,5 +1,5 @@
 /* FO Mhealth service worker: cache-first shell so the app works fully offline. */
-var CACHE = "fomhealth-v2";
+var CACHE = "fomhealth-v3";
 var ASSETS = [
   "./",
   "./index.html",
