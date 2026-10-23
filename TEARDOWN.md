@@ -50,3 +50,38 @@ instead of trusting a server. Everything runs offline.
 - SHA-256 fingerprint of the ciphertext is displayed and independently verifiable
   (Settings → Encryption), even while locked.
 - Backups are the same sealed envelope; import verifies before restoring.
+
+---
+
+# Second teardown: UpLife (com.olearis.uplife)
+
+A Flutter-based self-improvement/habit app studied the same way (REA static pass plus a
+direct bundle survey of assets, manifest, and resources). REA's analyzer targets JavaScript
+bundles, so on a Flutter (Dart AOT) package its results are limited; the survey below comes
+from the shipped asset and resource tree.
+
+## Feature surface observed (from shipped artifacts)
+
+- **Daily routine / calendar** with a "my day" model: items can be added to my day,
+  removed, or rescheduled; per-day mood check-in slot on the calendar.
+- **Journeys**: structured multi-step programs, gated progress (locked states), a
+  "start journey" entry point on home.
+- **Audio-first content**: player controls (play/stop, ±15s), reading mode with a
+  switch to audio, font-size controls for reading.
+- **Onboarding clarifications**: profile questions with "why we're asking" explainers
+  (daily activity rhythm, gender, name), importance-of-regularity explainer.
+- **Engagement polish**: congrats animations (day passed, content consumed), favorites,
+  notification preferences, aftercare preferences.
+- Commercial stack: RevenueCat subscriptions, Amplitude/Branch/AppsFlyer analytics,
+  social auth. FO Mhealth deliberately ships none of these.
+
+## What FO Mhealth takes (original implementation, no copied UI or copy)
+
+1. **My day** — a daily plan: pick a few practices each morning, check them off, fresh
+   list every day. Borrowed as a concept from the "my day / daily routine" model.
+2. **Reading size** — an accessibility control (A / A+ / A++) borrowed from UpLife's
+   font-size controls.
+3. The "explain why we ask" pattern for any future profile questions, and congrats-style
+   microcopy on plan completion.
+
+Nothing else transfers: no accounts, subscriptions, analytics, or gated content in FO Mhealth.
