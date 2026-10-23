@@ -9,7 +9,7 @@
   var unlocked = false;
 
   function blank() {
-    return { profile: null, checkins: [], journals: [], assessments: [], exercises: [], settings: { theme: "dark" } };
+    return { profile: null, checkins: [], journals: [], assessments: [], exercises: [], plan: null, settings: { theme: "dark" } };
   }
   function save() {
     if (encrypted) CRYPTO.write(S);
@@ -170,6 +170,7 @@
   };
   function render() {
     document.documentElement.setAttribute("data-theme", (S && S.settings && S.settings.theme) || "dark");
+    $app.style.zoom = (S && S.settings && S.settings.zoom) || 1;
     if (!unlocked) { boot(); return; }
     var path = (location.hash || "#/").replace(/^#\//, "");
     var h = path.split("/")[0];
@@ -217,7 +218,7 @@
       (doneToday ? "You have checked in today. Nice." : "First thing: a 60-second check-in.") + "</p>" +
       '<div class="btnrow"><button class="btn primary" data-go="#/checkin">' + (doneToday ? "Log another check-in" : "Start check-in") + "</button>" +
       '<button class="btn ghost" data-go="#/assess">Screenings</button></div></div>' +
-      '<div class="sectiontitle">This week</div>' +
+      myDayCard() + '<div class="sectiontitle">This week</div>' +
       '<div class="card"><svg class="moodchart" id="wkchart" viewBox="0 0 300 150" preserveAspectRatio="none"></svg></div>' +
       '<div class="sectiontitle">Mind gym</div><div class="grid two">' +
       tile("#/exercises", "breath", "Guided exercises", "Breathing, grounding, CBT tools") +
@@ -226,10 +227,73 @@
       tile("#/journalNew", "pen", "Journal entry", "Free write or a guided prompt") +
       tile("#/journal", "heart", "Past entries", S.journals.length + " saved, all local") + "</div>";
     shell("home", html);
-    drawWeek("wkchart"); bindNav();
+    drawWeek("wkchart"); bindMyDay(); bindNav();
   }
   function tile(href, em, title, sub) {
     return '<button class="tile" data-go="' + href + '"><div class="em">' + iconGlyph(em) + "</div><h3>" + title + "</h3><p>" + sub + "</p></button>";
+  }
+
+  /* ---------- my day (daily plan) ---------- */
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  }
+  function plan() {
+    if (!S.plan || S.plan.date !== todayKey()) { S.plan = { date: todayKey(), items: [], done: {} }; }
+    return S.plan;
+  }
+  function myDayCard() {
+    var p = plan();
+    var html = '<div class="sectiontitle">My day</div><div class="card"><h2>Today\u2019s plan</h2>';
+    if (!p.items.length) {
+      html += '<p class="sub">Pick a few practices for today. Small and doable beats ambitious.</p><div class="chips">';
+      DATA.exercises.slice(0, 6).forEach(function (e) {
+        html += '<button class="chip" data-plan-add="' + e.id + '">' + esc(e.title) + "</button>";
+      });
+      html += "</div>";
+    } else {
+      html += '<div class="planlist">';
+      p.items.forEach(function (id) {
+        var e = DATA.exercises.find(function (x) { return x.id === id; });
+        if (!e) return;
+        var done = !!p.done[id];
+        html += '<div class="planrow' + (done ? " done" : "") + '"><button class="plancheck" data-plan-toggle="' + id + '">' + (done ? "\u2713" : "") + "</button><span>" + esc(e.title) + "</span></div>";
+      });
+      html += '</div><div class="btnrow"><button class="chip" data-plan-add="__more">+ add another</button></div>';
+      var all = p.items.every(function (id) { return p.done[id]; });
+      if (all) html += '<p class="sub" style="color:var(--accent)">Plan complete. That is the whole point.</p>';
+    }
+    html += "</div>";
+    return html;
+  }
+  function bindMyDay() {
+    $app.querySelectorAll("[data-plan-add]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-plan-add");
+        var p = plan();
+        if (id === "__more") {
+          var nxt = DATA.exercises.find(function (x) { return p.items.indexOf(x.id) < 0; });
+          if (nxt) { p.items.push(nxt.id); } else { toast("All practices are already listed"); }
+        } else if (p.items.indexOf(id) < 0) { p.items.push(id); }
+        save(); render();
+      });
+    });
+    $app.querySelectorAll("[data-plan-toggle]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-plan-toggle");
+        var p = plan();
+        if (p.done[id]) { delete p.done[id]; } else { p.done[id] = Date.now(); }
+        save(); render();
+      });
+    });
+  }
+
+  function zoomCardHtml() {
+    var zv = (S && S.settings.zoom) || 1;
+    var row = [1, 1.15, 1.3].map(function (v) {
+      return '<button class="btn ' + (zv === v ? "primary" : "ghost") + '" data-zoom="' + v + '">' + (v === 1 ? "A" : v === 1.15 ? "A+" : "A++") + "</button>";
+    }).join("");
+    return '<div class="card"><h2>Reading size</h2><div class="btnrow">' + row + '</div><p class="sub">Larger text across the whole app.</p></div>';
   }
 
   /* ---------- mood chart ---------- */
@@ -385,7 +449,7 @@
       $app.innerHTML =
         '<div class="topbar"><div class="brand"><h1>' + a.short + "</h1></div><button class='iconbtn' data-go='#/assess'>&#8592;</button></div>" +
         '<div class="progress"><i style="width:' + pct + '%"></i></div><p style="font-size:12px;color:var(--ink3)">Question ' + (qi + 1) + " of " + a.questions.length + " · over the last 2 weeks, how often…</p>" +
-        '<div class="card"><div class="q"><p>' + esc(q) + "</p><div class='opts>" + opts + "</div></div></div>";
+        '<div class="card"><div class="q"><p>' + esc(q) + "</p><div class='opts'>" + opts + "</div></div></div>";
       $app.querySelectorAll(".opt").forEach(function (o) {
         o.addEventListener("click", function () {
           answers.push(+o.getAttribute("data-v"));
@@ -572,7 +636,7 @@
       "<button class=\"btn\" id=\"exp\">Encrypted backup</button>" +
       '<label class="btn ghost" style="cursor:pointer">Restore backup<input type="file" id="imp" accept=".json,.fomh" class="hidden"></label>' +
       '<button class="btn danger" id="wipe">Erase everything</button></div></div>' +
-      '<div class="card"><h2>Appearance</h2><div class="btnrow"><button class="btn ' + ((S && S.settings.theme !== "light") ? "primary" : "ghost") + '" id="tdark">Dark</button><button class="btn ' + (S && S.settings.theme === "light" ? "primary" : "ghost") + '" id="tlight">Light</button></div></div>' +
+      '<div class="card"><h2>Appearance</h2><div class="btnrow"><button class="btn ' + ((S && S.settings.theme !== "light") ? "primary" : "ghost") + '" id="tdark">Dark</button><button class="btn ' + (S && S.settings.theme === "light" ? "primary" : "ghost") + '" id="tlight">Light</button></div></div>' + zoomCardHtml() +
       '<div class="card"><h2>Support (India)</h2><p class="sub">If things feel heavier than self-help, use these. All free.</p>' +
       '<div class="row"><div class="grow"><h4>Tele-MANAS (Govt of India)</h4><p>24×7, 20+ languages</p></div><div class="meta"><b>14416</b></div></div>' +
       '<div class="row"><div class="grow"><h4>AASRA</h4><p>24×7 crisis line</p></div><div class="meta"><b>+91 9820466726</b></div></div>' +
@@ -633,6 +697,9 @@
     });
     document.getElementById("tdark").addEventListener("click", function () { S.settings.theme = "dark"; save(); render(); });
     document.getElementById("tlight").addEventListener("click", function () { S.settings.theme = "light"; save(); render(); });
+    $app.querySelectorAll("[data-zoom]").forEach(function (b) {
+      b.addEventListener("click", function () { S.settings.zoom = +b.getAttribute("data-zoom"); save(); render(); });
+    });
     bindNav();
   }
 
