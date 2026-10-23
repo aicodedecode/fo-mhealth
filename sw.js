@@ -1,14 +1,9 @@
 /* FO Mhealth service worker: cache-first shell so the app works fully offline. */
-var CACHE = "fomhealth-v4";
+var CACHE = "fomhealth-v5";
 var ASSETS = [
-  "./",
-  "./index.html",
-  "./css/styles.css",
-  "./js/app.js",
-  "./js/data.js",
-  "./js/crypto.js",
+  "./", "./index.html", "./css/styles.css", "./js/crypto.js", "./js/data.js", "./js/app.js",
   "./manifest.webmanifest",
-  "./assets/icon.svg"
+  "./assets/icon.svg",
 ];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }).then(function () { return self.skipWaiting(); }));
@@ -20,11 +15,15 @@ self.addEventListener("activate", function (e) {
 });
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
-  e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
-    return hit || fetch(e.request).then(function (res) {
-      var copy = res.clone();
-      caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
-      return res;
-    });
-  }));
+  e.respondWith(
+    caches.match(e.request).then(function (hit) {
+      return hit || fetch(e.request).then(function (res) {
+        var copy = res.clone();
+        caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+        return res;
+      }).catch(function () {
+        return caches.match("./index.html");
+      });
+    })
+  );
 });
