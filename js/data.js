@@ -225,3 +225,43 @@ DATA.lessons = [
 
 /* ---------- Focus areas for onboarding ---------- */
 DATA.focuses = ["low mood", "anxiety", "sleep", "focus & motivation", "stress at work", "relationships", "habits", "self-esteem"];
+
+/* Journeys: multi-day programs (original copy). */
+DATA.journeys = [
+  {
+    id: "calm7", title: "7 days calmer", sub: "One small practice a day to lower the baseline hum of stress.", minutes: 5,
+    days: [
+      { title: "Name the hum", body: "Stress is easier to manage once it has a name. Today, three times, pause and ask: what is the feeling, and where do I feel it?", practice: "Do the 4-7-8 breathing once today." },
+      { title: "The 90-second wave", body: "A strong emotion peaks and fades in about 90 seconds if you do not feed it with a story. Next time one hits, set a timer and just breathe through it.", practice: "Try paced breathing during one spike." },
+      { title: "Worry window", body: "Give worries an appointment instead of letting them drop in all day. Ten minutes, same time daily, and worry only there.", practice: "Pick a 10-minute worry window tonight." },
+      { title: "One task, fully", body: "Split attention feeds anxiety. Pick one ordinary task and do it with full attention, like it matters, because it does.", practice: "Single-task one chore today." },
+      { title: "Loosen the jaw", body: "Stress parks itself in the body: jaw, shoulders, hands. A slow body scan from forehead to feet tells your nervous system the threat has passed.", practice: "Do the body scan once." },
+      { title: "Say the kind thing", body: "Notice how you talk to yourself when you slip up. Say to yourself what you would say to a friend in the same spot.", practice: "Write one kind line to yourself in the journal." },
+      { title: "Keep what worked", body: "Seven days of small experiments. Which one actually helped? That one becomes a keeper, not a memory.", practice: "Add your keeper to My day." }
+    ]
+  },
+  {
+    id: "sleep7", title: "Sleep reset", sub: "A week of evening habits that make falling asleep less of a fight.", minutes: 4,
+    days: [
+      { title: "Set your alarm, not your bedtime", body: "A fixed wake time is the anchor everything else hangs on. Bedtime follows it. Set one wake time for the whole week.", practice: "Commit to one wake time for 7 days." },
+      { title: "Dim the evening", body: "Bright light tells your brain it is noon. An hour before bed, lower the lights and the screen brightness.", practice: "Try 30 dim minutes before bed." },
+      { title: "The brain dump", body: "Racing thoughts at night are tomorrow's to-do list arriving early. Write them down and the mind can let them go.", practice: "Journal tonight: what is on your mind?" },
+      { title: "Cool, dark, quiet", body: "Body temperature dropping is part of the sleep signal. A cooler room, darker room, quieter room: check all three tonight.", practice: "Fix one thing in your sleep space." },
+      { title: "No doomscroll in bed", body: "Bed is for sleep, so the brain learns what the bed means. If you cannot sleep for 20 minutes, get up and do something dull.", practice: "Keep the phone off the pillow tonight." },
+      { title: "Wind-down ritual", body: "Same three steps in the same order every night: the sequence itself becomes the sleep cue. Make yours simple.", practice: "Pick your three wind-down steps." },
+      { title: "Review the week", body: "Falling asleep is a skill that responds to practice, not a personality trait. Note what changed this week and keep the best habit.", practice: "Log your week in the journal." }
+    ]
+  },
+  {
+    id: "focus7", title: "Focus rebuild", sub: "Seven days of attention training for a mind that keeps tab-hopping.", minutes: 4,
+    days: [
+      { title: "Count the switches", body: "Before fixing attention, see the problem: roughly note how often you switch tasks today. The number is usually embarrassing and useful.", practice: "Count your task switches today." },
+      { title: "One 25-minute block", body: "One timer, one task, nothing else. Twenty-five focused minutes beats two hours of half-attention.", practice: "Do one 25-minute focus block." },
+      { title: "Park the thought", body: "Random thoughts arrive mid-task. Keep a scrap page beside you, park them there, and return to the task.", practice: "Keep a parking page today." },
+      { title: "Boredom reps", body: "Attention is a muscle and boredom is the gym. Stand in a queue or sip tea without your phone and let the mind settle.", practice: "Five phoneless minutes today." },
+      { title: "Kill the loudest ping", body: "Notifications are other people's priorities arriving in yours. Turn off the noisiest three apps today.", practice: "Silence three apps." },
+      { title: "Slow breath, sharp mind", body: "Six breaths a minute for a few minutes measurably steadies attention. Do it before your hardest task.", practice: "Breathe 6/min for 3 minutes before one task." },
+      { title: "Your focus formula", body: "You now know your biggest leak and your best block. Write your one-line focus rule and keep it where you work.", practice: "Write your focus rule in the journal." }
+    ]
+  }
+];
